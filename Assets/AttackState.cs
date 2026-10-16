@@ -2,7 +2,11 @@ using UnityEngine;
 
 public sealed class AttackState : StateBase
 {
-    public AttackState(PlayerController controller) : base(controller) { }
+    private PlayerController _controller;
+    public AttackState(PlayerController controller)
+    {
+        _controller = controller;
+    }
 
     public override void Enter()
     {
@@ -11,7 +15,9 @@ public sealed class AttackState : StateBase
 
     public override void Update()
     {
+        // 공격 했다고 치고
         Debug.Log("<color=green>Attack 상태</color>");
+        _controller.SetState(_controller.Idle);
     }
 
     public override void Exit()

@@ -1,11 +1,17 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public sealed class IdleState : StateBase
 {
-    public IdleState(PlayerController controller) : base(controller) { }
+    private PlayerController _controller;
+    public IdleState(PlayerController controller)
+    {
+        _controller = controller;
+    }
 
     public override void Enter()
     {
+        _controller.AttackInputRef.action.performed += TransitionAttack;
         Debug.Log("<color=blue>Idle 상태 진입</color>");
     }
 
@@ -17,5 +23,11 @@ public sealed class IdleState : StateBase
     public override void Exit() 
     { 
         Debug.Log("<color=blue>Idle 상태 빠져나감</color>");
+        _controller.AttackInputRef.action.performed -= TransitionAttack;
+    }
+
+    private void TransitionAttack(InputAction.CallbackContext context)
+    {
+        _controller.SetState(_controller.Attack);
     }
 }
